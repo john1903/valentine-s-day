@@ -74,10 +74,17 @@ bigHeart.addEventListener('click', function() {
     }, 500);
 });
 
-// Add sparkle effect on mouse move
+// Add sparkle effect on mouse move with throttling
+let lastSparkleTime = 0;
+const sparkleThrottle = 100; // Minimum time between sparkles in ms
+
 document.addEventListener('mousemove', function(e) {
-    // Randomly create hearts near cursor
-    if (Math.random() < 0.03) {
+    const now = Date.now();
+    
+    // Throttle and randomly create sparkles near cursor
+    if (now - lastSparkleTime > sparkleThrottle && Math.random() < 0.3) {
+        lastSparkleTime = now;
+        
         const sparkle = document.createElement('div');
         sparkle.textContent = '✨';
         sparkle.style.position = 'fixed';
