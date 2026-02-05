@@ -23,13 +23,22 @@ function createFloatingHeart() {
     }, (duration + 2) * 1000);
 }
 
-// Create hearts periodically
-setInterval(createFloatingHeart, 500);
+// Create hearts periodically, but pause when page is hidden
+let heartInterval = setInterval(createFloatingHeart, 500);
 
 // Initial hearts
 for (let i = 0; i < 10; i++) {
     setTimeout(createFloatingHeart, i * 300);
 }
+
+// Pause heart generation when page is not visible
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        clearInterval(heartInterval);
+    } else {
+        heartInterval = setInterval(createFloatingHeart, 500);
+    }
+});
 
 // Surprise button functionality
 const surpriseBtn = document.getElementById('surpriseBtn');
@@ -101,7 +110,7 @@ document.addEventListener('mousemove', function(e) {
             sparkle.remove();
         }, 1000);
     }
-});
+}, { passive: true });
 
 // Add fadeOut animation for sparkles
 const style = document.createElement('style');
